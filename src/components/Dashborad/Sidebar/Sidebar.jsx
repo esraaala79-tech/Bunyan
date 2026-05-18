@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.css"
 
-function Sidebar ({isDraft}){
+function Sidebar({ draft }){
 const links = [
     {icon : "fa-chart-bar", title: "Status", path:"/"},
     {icon:"fa-users", title: "Users Managment",  path:"/users"},
@@ -22,8 +22,8 @@ const links = [
                      className={`${styles.navItem} d-flex align-items-center gap-3 py-3 px-4 `} key={index}>
                     <i className={`fa-solid ${item.icon} fs-5 `}></i>
                     <span className="fs-5 ">{item.title }
-                        {item.path ==="/users" && isDraft && (
-                            <span className="badge bg-warning ms-2 text-dark">Draft</span>
+                        {draft === item.title && (
+                            <span className="badge bg-warning ms-2 text-dark"> Draft</span>
 
                         )}
                     </span>

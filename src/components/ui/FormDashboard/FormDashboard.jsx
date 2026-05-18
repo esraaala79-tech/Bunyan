@@ -1,16 +1,9 @@
-import { useOutletContext } from "react-router-dom";
-import { useState } from "react";
+function FormDashboard({ setDraft, title }) {
 
-function FormDashboard(){
-  const {setIsDraft} =useOutletContext(); 
-  const [formData, setFormData] = useState ({email: "", password:""});
-  const handleChange = (e) => {
-    const updated = {...formData, [e.target.name]: e.target.value};
-    setFormData(updated);
-
-    const hasValue = Object.values(updated).some((val)=> val.trim() !== "");
-    setIsDraft(hasValue);
-  }
+  const handleChange = () => {
+    setDraft(title);
+  };
+  
     return(
  <div className="container">
 
@@ -18,7 +11,7 @@ function FormDashboard(){
   <div className="form-group">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" 
-    value={formData.email} onChange={handleChange}  />
+     onChange={handleChange}  />
     
   </div>
 
@@ -26,7 +19,7 @@ function FormDashboard(){
   <div className="form-group">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" 
-    value={formData.password}  onChange={handleChange}/>
+     onChange={handleChange}/>
   </div>
 
   <div className="form-check">

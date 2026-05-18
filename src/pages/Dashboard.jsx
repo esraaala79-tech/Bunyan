@@ -8,28 +8,26 @@ import Projects from "./Projects";
 import StatusPage from "./StatusPage";
 import Website from "./Website";
 import Users from "./Users";
-
-
 import Chat from "./Chat";
 import TableDashboard from "../components/ui/TableDashboard/TableDashboard";
 import FormDashboard from "../components/ui/FormDashboard/FormDashboard"
 function Dashboard() {
-  const [isDraft, setIsDraft] = useState(false);
-  
+const [draft, setDraft] = useState("");
+
   return (
     <>
       <Navbar adminName="Esraa" />
       <div className="d-flex ">
-      <Sidebar isDraft={isDraft}/>
+      <Sidebar draft={draft}/>
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={<StatusPage/>}/>
           
-           <Route path="/users" element={<Users setIsDraft={setIsDraft}/>} >
+           <Route path="/users" element={<Users />} >
         {/* First Child */}
     <Route index element ={<TableDashboard name="Users"/>} />
         {/* Second Child */}
-        <Route path="add" element = {<FormDashboard/>} />
+        <Route path="add" element = {<FormDashboard setDraft={setDraft} title="Users Managment" />} />
            </Route>
 
 

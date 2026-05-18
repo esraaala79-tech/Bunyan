@@ -4,7 +4,7 @@ function Users({setIsDraft}) {
    
   return (
     <section className="py-4">
-<Outlet context={{setIsDraft}}/>
+<Outlet />
 </section>
 )
 }
