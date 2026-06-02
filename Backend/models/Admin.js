@@ -1,32 +1,34 @@
 const mongoose = require("mongoose");
-const bcrybt = require ("bcrypt");
-const { string } = require("joi");
+const bcrypt = require("bcrypt");
+// const { string } = require("joi");
 
 const adminSchema = new mongoose.Schema({
     username:{
-        type:string,
+        type:String,
         required: [true, "Username is required"]
     },
     email:{
-        type:string,
+        type:String,
         required: [true, "Email is required"]
     },
     password:{
-     type: string,
-     require: [true, "Email is required"],
+     type: String,
+     required: [true, "password is required"],
      minlength: 6,
+     select : false,
     },
     
 },{timestamps:true});
 
-adminSchema.pre("save",async function name(next) {
+adminSchema.pre("save",async function () {
     if (!this.isModified("password")) return next();
-    this.password = await bcrybt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
+
 
 });
 
 adminSchema.methods.comparePassword = async function (methodPassword) {
-    return await bcrybt.compare(methodPassword, this.password);
+    return await bcrypt.compare(methodPassword, this.password);
 }
 
 const Admin = mongoose.model("Admin", adminSchema);
