@@ -3,6 +3,11 @@ require ("dotenv").config();
 //Express
 const express = require("express");
 const app= express();
+
+const http = require("http");
+const{Server} = require("socket.io");
+//merge server express & native server
+const server = http.createServer(app);
 //middleware
 app.use(express.json());
 const morgan = require("morgan")
@@ -20,10 +25,18 @@ connectedDB();
 //routes
 const adminRoutes = require ("./routes/auth.route")
 app.use("/api/dashboard", adminRoutes)
+
+// basic config
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["Get", "POST"],
+    },
+});
 //Port
 const port = process.env.PORT|| 3000 ;
 
 //Run server
-app.listen(port, ()=>{
+server.listen(port, ()=>{
     console.log(`Server Is Running ${port}`)
 })

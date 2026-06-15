@@ -3,14 +3,16 @@ const jwt = require ("jsonwebtoken")
 
 //function 
 
-const authMiddleware = async (req, res)=>{
+const authMiddleware = async (req, res, next)=>{
+     const authHeader = req.headers.authorization;
     try{
-        if (!authMiddleware){
-            return res.status(401).json({msg:"not auth"})
+        if (!authHeader){
+            return res.status(401).json({msg:"Unauthorized"})
         }
-    const token = authHeader.split("")[1]
+    const token = authHeader.split(" ")[1]
     const decoded = jwt.verify(token , process.env.JWT_SECRET)
-    req.admin = decoded 
+    req.user = decoded 
+    next()
     
 
     }catch(error){

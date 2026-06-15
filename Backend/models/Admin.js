@@ -17,6 +17,9 @@ const adminSchema = new mongoose.Schema({
      minlength: 6,
      select : false,
     },
+    role:{
+        type:String
+    }
     
 },{timestamps:true});
 

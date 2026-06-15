@@ -28,13 +28,19 @@ const loginController = async(req, res)=>{
         return res.status(400).json({msg: "Invalid Email Or Password"});
     
 
-       const token = await jwt.sign({id: admin._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+       const token = await jwt.sign(
+        {id: admin._id, role:"admin"},
+         process.env.JWT_SECRET, 
+         {expiresIn: "1d"});
        res.status(200).json({msg:"Login Succesfully", token});
 
-    }catch(error){
+    }catch (error) {
 
-    }
+        return res.status(500).json({
+            msg: error.message
+        });
     
+}
 }
 //export
 module.exports = loginController;
