@@ -1,42 +1,51 @@
 // Dotenv
-require ("dotenv").config();
-//Express
+require("dotenv").config();
+// express
 const express = require("express");
-const app= express();
-
+const app = express();
+// Step 0
 const http = require("http");
-const{Server} = require("socket.io");
-//merge server express & native server
 const server = http.createServer(app);
-//middleware
+
+const morgan = require("morgan");
+// middleware json
 app.use(express.json());
-const morgan = require("morgan")
-//simple Logger
-if(process.env.NODE_ENV === "dev"){
-    app.use(morgan("dev"));
+// connection DB
+// Simple Logger
+if (process.env.NODE_ENV === "dev") {
+  app.use(morgan("dev"));
 }
-//test Rout
-app.get("/test", (req, res)=>{
-    res.json({msg:"test route"})
-})
-//connection BD
-const connectedDB = require ("./config/db");
-connectedDB();
-//routes
-const adminRoutes = require ("./routes/auth.route")
-app.use("/api/dashboard", adminRoutes)
-
-// basic config
-const io = new Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["Get", "POST"],
-    },
+// Test Route
+app.get("/test", (req, res) => {
+  res.json({ msg: "Test Route" });
 });
-//Port
-const port = process.env.PORT|| 3000 ;
 
-//Run server
-server.listen(port, ()=>{
-    console.log(`Server Is Running ${port}`)
-})
+const connectedDB = require("./config/db");
+connectedDB();
+
+const adminRoutes = require("./routes/auth.route");
+const userRoutes = require("./routes/user.route");
+const userAuthRoutes = require("./routes/authUser.route");
+
+app.use("/api/dashboard", adminRoutes);
+app.use("/api/dashboard/users", userRoutes);
+app.use("/api/users", userAuthRoutes);
+
+// Init Socket Server => 1
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  // Configuration Server Node
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+require("./sockets/chat.socket")(io);
+
+// Port
+const port = process.env.PORT || 3000;
+// Run Server
+server.listen(port, () => {
+  console.log(`Server Is Running ${port}`);
+});
